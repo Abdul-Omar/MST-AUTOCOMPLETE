@@ -1,0 +1,104 @@
+Reading file: data/freq_dict.txt
+Enter a prefix/pattern to search for:
+Enter a number of completions:
+go
+get
+got
+going
+good
+give
+going to
+great
+group
+gasps
+government
+groans
+gotta
+guys
+getting
+game
+grunts
+gutenberg
+grunting
+guy
+girl
+gone
+grow
+groaning
+gets
+gave
+goes
+gonna
+grampa
+ground
+going to be
+gasping
+go to
+guess
+girls
+gentlemen
+goal
+got to
+general
+glass
+gun
+growth
+greenlee
+gasp
+get a
+green
+growling
+gee
+gives
+got a
+geez
+god
+get the
+gas
+george
+garden
+gotten
+generation
+global
+going on
+giggling
+goin
+gods
+generally
+games
+gold
+guard
+goodness
+get to
+gain
+gum
+group of
+guest
+gift
+guns
+goddamn
+gem
+grab
+glasses
+grade
+gather
+growing
+gwen
+gimme
+gettin
+gon na
+greatest
+giggles
+gia
+going to have
+glad
+go back
+gorgeous
+grease
+gender
+generate
+gambling
+gosh
+golf
+get out
+Continue? (y/n)
