@@ -42,7 +42,7 @@
 	} else if(word[i] > (*node)->letter){
 	    insertHelper(word, freq, &((*node)->right), i);
 	} else {
-	    if(i == word.size()){
+	    if(i == word.size() ){
 
 		if((*node)->wordEnd) return false;
 		(*node)->freq = freq;
@@ -52,7 +52,7 @@
 	    	insertHelper(word, freq, &((*node)->middle), i+1);
 	    }
 	}
-	return true;	
+	return false;	
     }
 
     void DictionaryTrie::deleteAll(TrieNode* node){
@@ -99,10 +99,12 @@
      
     
      //get root of prefix subtrie
-     TrieNode* node = getPrefixRoot(root, prefix, 0);                       
+     TrieNode* node = getPrefixRoot(root, prefix, 0);
+    
+     if(!node) return vec;     
     
     //if prefix is valid word itself
-     if(node->wordEnd) {    
+     if(node && node->wordEnd) {    
        
        completions.emplace_back(make_pair(prefix, node->freq));
      }

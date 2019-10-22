@@ -81,7 +81,7 @@ TEST(DictTrieTests, TEST_INSERT_EMPTY_STRING) {
     dict.insert("tap", 5);
     dict.insert( "tape", 7);
 
-  ASSERT_EQ( dict.find(""), false);
+  ASSERT_EQ( dict.insert("", 10), false);
   
 }
 TEST(DictTrieTests, TEST_COMPLETIONS_NONE) {
