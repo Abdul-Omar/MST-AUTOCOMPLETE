@@ -43,6 +43,8 @@
 	    insertHelper(word, freq, &((*node)->right), i);
 	} else {
 	    if(i == word.size()){
+
+		if((*node)->wordEnd) return false;
 		(*node)->freq = freq;
 		(*node)->wordEnd = true;
 		return true;
@@ -73,6 +75,8 @@
 
     /* TODO: */
     bool DictionaryTrie::insert(string word, unsigned int freq){
+
+	if(word.empty()) return false;
 	return insertHelper(word, freq, &root, 0);
     }
 
@@ -92,19 +96,33 @@
      vector<string> vec;
 
      if(!root) return vec;  	
+     
     
      //get root of prefix subtrie
      TrieNode* node = getPrefixRoot(root, prefix, 0);                       
-   
+    
+    //if prefix is valid word itself
+     if(node->wordEnd) {    
+       
+       completions.emplace_back(make_pair(prefix, node->freq));
+     }
+    
      getAllWords( node->middle, prefix, completions);
+    
+     //no valid completions
+     if(completions.size() < 1) return vec;
     
      //sort the vectors in order of increasing frequency	
     sort(completions.begin(), completions.end(), 
        [](const pair<string,unsigned int> &left, const std::pair<string ,unsigned int> &right) {
       return left.second > right.second;
     });
- 
-        
+   
+    //check if not enough valid words
+    if(completions.size() < numCompletions) {  
+    
+      numCompletions = completions.size();
+    }   
     //get the top completions
     for( int i = 0 ; i < numCompletions; i++) {  
      

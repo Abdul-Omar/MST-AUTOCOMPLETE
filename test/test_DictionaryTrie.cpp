@@ -58,5 +58,107 @@ TEST(DictTrieTests, TEST_FIND) {
    ASSERT_EQ( dict.find("applett"), false);
 
 }
+TEST(DictTrieTests, TEST_INSERT_TWICE) {
+    DictionaryTrie dict;
+    dict.insert("cape", 1);
+    dict.insert("apple",  6);
+    dict.insert("ape", 6);
+    dict.insert( "applet", 8);
+    dict.insert("tall",  8);
+    dict.insert("tap", 5);
+    dict.insert( "tape", 7);
+
+  ASSERT_EQ( dict.insert("applet", 8), false);
+
+}
+TEST(DictTrieTests, TEST_INSERT_EMPTY_STRING) {
+    DictionaryTrie dict;
+    dict.insert("cape", 1);
+    dict.insert("apple",  6);
+    dict.insert("ape", 6);
+    dict.insert( "applet", 8);
+    dict.insert("tall",  8);
+    dict.insert("tap", 5);
+    dict.insert( "tape", 7);
+
+  ASSERT_EQ( dict.find(""), false);
+  
+}
+TEST(DictTrieTests, TEST_COMPLETIONS_NONE) {
+    DictionaryTrie dict;
+    dict.insert("cape", 1);
+    dict.insert("apple",  6);
+    dict.insert("ape", 6);
+    dict.insert( "applet", 8);
+    dict.insert("tall",  8);
+    dict.insert("tap", 5);
+    dict.insert( "tape", 7);
+    
+    vector<string> vec = dict.predictCompletions("XY", 3);
+
+    ASSERT_EQ(vec.size(), 0);
+ 
+}
+TEST(DictTrieTests, TEST_COMPLETIONS_ORDERED) {
+    DictionaryTrie dict;
+    dict.insert("cape", 1);
+    dict.insert("apple",  6);
+    dict.insert("ape", 6);
+    dict.insert( "applet", 8);
+    dict.insert("tall",  8);
+    dict.insert("tap", 5);
+    dict.insert( "tape", 7);
+    
+    vector<string> vec = dict.predictCompletions("XY", 3);
+     string ape = "ape";
+    string apple = "apple";
+    string applet = "applet";
+   EXPECT_EQ(vec.at(0), applet);
+   EXPECT_EQ(vec.at(1), ape);
+  EXPECT_EQ(vec.at(2), apple);
+ 
+}
+TEST(DictTrieTests, TEST_COMPLETIONS_PREFIX_VALID) {
+    DictionaryTrie dict;
+    dict.insert("cape", 1);
+    dict.insert("apple",  6);
+    dict.insert("ape", 6);
+    dict.insert( "applet", 8);
+    dict.insert("tall",  8);
+    dict.insert("tap", 5);
+    dict.insert( "tape", 7);
+    dict.insert( "app", 3);
+
+    vector<string> vec = dict.predictCompletions("app", 3);
+
+    ASSERT_EQ(vec.size(), 3);
+ 
+}
+TEST(DictTrieTests, TEST_COMPLETIONS_VALID_PREFIX_NOT_TOP) {
+    DictionaryTrie dict;
+    dict.insert("cape", 1);
+    dict.insert("apple",  6);
+    dict.insert("ape", 6);
+    dict.insert( "applet", 8);
+    dict.insert("tall",  8);
+    dict.insert("tap", 5);
+    dict.insert( "tape", 7);
+    dict.insert( "app", 3);
+
+   
+    vector<string> vec = dict.predictCompletions("app", 2);
+
+    string apple = "apple";
+    string applet = "applet";
+    
+    EXPECT_EQ(vec.at(0), applet);
+    EXPECT_EQ(vec.at(1), apple);
+
+
+ 
+}
+
+
+
 
 /* TODO */
