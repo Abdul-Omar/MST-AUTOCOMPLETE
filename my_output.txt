@@ -1,104 +1,104 @@
 Reading file: data/freq_dict.txt
 Enter a prefix/pattern to search for:
 Enter a number of completions:
-go
-get
-got
-going
-good
-give
-going to
-great
-group
-gasps
-government
-groans
-gotta
-guys
-getting
-game
-grunts
-gutenberg
-grunting
-guy
-girl
-gone
-grow
-groaning
-gets
-gave
-goes
-gonna
-grampa
-ground
-going to be
-gasping
-go to
-guess
-girls
-gentlemen
-goal
-got to
-general
-glass
-gun
-growth
-greenlee
-gasp
-get a
-green
-growling
-gee
-gives
-got a
-geez
-god
-get the
-gas
-george
-garden
-gotten
-generation
-global
-going on
-giggling
-goin
-gods
-generally
-games
-gold
-guard
-goodness
-get to
-gain
-gum
-group of
-guest
-gift
-guns
-goddamn
-gem
-grab
-glasses
-grade
-gather
-growing
-gwen
-gimme
-gettin
-gon na
-greatest
-giggles
-gia
-going to have
-glad
-go back
-gorgeous
-grease
-gender
-generate
-gambling
-gosh
-golf
-get out
+eat
+eaten
+eating
+eath
+eatery
+eatings
+eatables
+eateries
+eatin
+eater
+eat the
+eat it
+eat a
+eating a
+eat and
+eating and
+eaters
+eating disorders
+eat them
+eating the
+eat in
+eaton
+eat at
+eating habits
+eat more
+eaten by
+eat your
+eating disorder
+eat with
+eating at
+eat anything
+eats
+eating it
+eat or
+eat that
+eat up
+eating in
+eating out
+eat this
+eat their
+eaten in
+eat out
+eat dinner
+eat for
+eat lunch
+eat something
+eat all
+eating more
+eat a lot
+eat meat
+eat my
+eat less
+eat what
+eat some
+eat in the
+eat breakfast
+eat as
+eat too
+eat right
+eat and drink
+eating them
+eat well
+eat you
+eat his
+eating with
+eat on
+eat when
+eating dinner
+eats the
+eating lunch
+eating is
+eats a
+eating or
+eaten a
+eating too
+eating well
+eating and drinking
+eat any
+eaten the
+eating his
+eat a lot of
+eaten up
+eating breakfast
+eat like
+eating their
+eat an
+eat only
+eat to
+eating right
+eat too much
+eat me
+eat one
+eat her
+eating up
+eateth
+eat is
+eating meat
+eat fish
+eat or drink
+eaten away
 Continue? (y/n)

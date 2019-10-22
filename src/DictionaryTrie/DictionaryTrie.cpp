@@ -112,10 +112,15 @@
      //no valid completions
      if(completions.size() < 1) return vec;
     
-     //sort the vectors in order of increasing frequency	
+     //sort the vectors in order of increasing frequency and alphabetically if tied	
     sort(completions.begin(), completions.end(), 
        [](const pair<string,unsigned int> &left, const std::pair<string ,unsigned int> &right) {
-      return left.second > right.second;
+       if(left.second != right.second) {
+         return left.second > right.second;
+      }
+      else { 
+        return left.first < right.first;
+      }
     });
    
     //check if not enough valid words
@@ -128,18 +133,7 @@
      
          topCompletions.emplace_back(make_pair(completions[i].first.substr(0, completions[i].first.length() -1), completions[i].second));      
    }
-     //if there is tie in frequency, sort by alphabet order
-    for( int i = 0; i < topCompletions.size() - 1 ; i++) {  
    
-      if(topCompletions[i].second == topCompletions[i + 1].second) { 
-    
-        sort(topCompletions.begin() + i, (topCompletions.begin() + (i + 1)), 
-          [](const pair<string,unsigned int> &left, const std::pair<string ,unsigned int> &right) {
-          return left.first < right.first;
-      });
-    }
-    
-    } 
 
     for( int i = 0; i < topCompletions.size(); i++) { 
     

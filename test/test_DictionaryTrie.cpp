@@ -104,18 +104,18 @@ TEST(DictTrieTests, TEST_COMPLETIONS_ORDERED) {
     dict.insert("cape", 1);
     dict.insert("apple",  6);
     dict.insert("ape", 6);
-    dict.insert( "applet", 8);
+    dict.insert( "applet", 6);
     dict.insert("tall",  8);
     dict.insert("tap", 5);
     dict.insert( "tape", 7);
     
-    vector<string> vec = dict.predictCompletions("XY", 3);
+    vector<string> vec = dict.predictCompletions("ap", 3);
      string ape = "ape";
     string apple = "apple";
     string applet = "applet";
-   EXPECT_EQ(vec.at(0), applet);
-   EXPECT_EQ(vec.at(1), ape);
-  EXPECT_EQ(vec.at(2), apple);
+   EXPECT_EQ(vec.at(0), ape);
+   EXPECT_EQ(vec.at(1), apple);
+  EXPECT_EQ(vec.at(2), applet);
  
 }
 TEST(DictTrieTests, TEST_COMPLETIONS_PREFIX_VALID) {
