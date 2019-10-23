@@ -28,7 +28,7 @@ class DictionaryTrie {
     TrieNode* getPrefixRoot(TrieNode* root, string prefix, int charIndex)const;
 
     // Second helper function for predictCompletions; uses recursion to find all words starting from prefix nodes
-    void getAllWords(TrieNode* root, string prefix, vector<pair<string, unsigned int>>& vect);
+    void getAllWords(TrieNode* root, string prefix, priority_queue<pair<unsigned int, string>> &pq);
 
     // Helper function for insert; uses recursion to insert TrieNodes
     bool insertHelper(string word, unsigned int freq, TrieNode ** node, int i);
