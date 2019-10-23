@@ -206,20 +206,17 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
 	pq.pop();
 
        if(!completions.empty()){
-	  top2.first = completions[i-1].first;
-	  top2.second = completions[i-1].second;
+	  top2 = completions.at(i-1);
        	  if(top.first == top2.first) {   
        
             if( top.second > top2.second) {
-	      completions[i-1].first = top2.first;
-	      completions[i-1].second = top2.second;
+	      completions.at(i-1) = top2;
       	      completions.emplace_back(make_pair(top.second.substr(0, top.second.length() -1), 
                                   top.first)); 
 	    }
  	  }
             else {
-	      completions[i-1].first = top.first;
-	      completions[i-1].second = top.second;
+	      completions.at(i-1) = top;
       	      completions.emplace_back(make_pair(top2.second.substr(0, top2.second.length() -1), 
                                   top2.first)); 
        }  
