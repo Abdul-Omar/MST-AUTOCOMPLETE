@@ -5,7 +5,7 @@
  */
 #include "DictionaryTrie.hpp"
 #include <iostream>
-#include <stack>
+#include <queue>
 #include <vector>
 #include <utility>
 #include <algorithm>
@@ -92,7 +92,9 @@
       vector<pair<string, unsigned int>> topCompletions;//number of completions
 	
      vector<pair<string, unsigned int>> completions;//number of completions
-     
+    
+     priority_queue<vector<pair<string,unsigned int>>> pq;
+    
      vector<string> vec;
 
      if(!root) return vec;  	
