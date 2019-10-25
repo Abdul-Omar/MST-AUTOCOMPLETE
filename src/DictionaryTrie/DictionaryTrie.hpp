@@ -23,7 +23,8 @@ class DictionaryTrie {
     // TODO: add private members and helper methods here
     // pointer to root of DictionaryTrie
     TrieNode * root;
-
+    
+    void getWildCard(TrieNode* root, string wildCard, string prefix, vector<pair<string, unsigned int>> & vect, unsigned int index);
     // Helper function for predictCompletions; finds prefix nodes
     TrieNode* getPrefixRoot(TrieNode* root, string prefix, int charIndex)const;
 

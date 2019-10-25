@@ -24,7 +24,7 @@ TEST(DictTrieTests, EMPTY_TEST) {
     ASSERT_EQ(dict.find("abrakadabra"), false);
 }
 
-TEST(DictTrieTests, TEST_COMPLETIONS) {
+/*TEST(DictTrieTests, TEST_COMPLETIONS) {
     DictionaryTrie dict;
     dict.insert("cape", 1);
     dict.insert("apple",  6);
@@ -56,6 +56,7 @@ TEST(DictTrieTests, TEST_FIND) {
 
   ASSERT_EQ( dict.find("applet"), true);
    ASSERT_EQ( dict.find("applett"), false);
+   ASSERT_EQ( dict.find("ape"), true);
 
 }
 TEST(DictTrieTests, TEST_INSERT_TWICE) {
@@ -156,9 +157,42 @@ TEST(DictTrieTests, TEST_COMPLETIONS_VALID_PREFIX_NOT_TOP) {
 
 
  
+}*/
+
+TEST(DictTrieTests, TEST_FIND) {
+    DictionaryTrie dict;
+    dict.insert("cape", 1);
+    dict.insert("apple",  6);
+    dict.insert("ape", 6);
+    dict.insert( "applet", 8);
+    dict.insert("tall",  8);
+    dict.insert("tap", 5);
+    dict.insert( "tape", 7);
+
+  ASSERT_EQ( dict.find("applet"), true);
+   ASSERT_EQ( dict.find("apett"), false);
+   ASSERT_EQ( dict.find("ape"), true);
+
 }
 
+TEST(DictTrieTests, TEST_COMPLETIONS_WILDCARD) {
+    DictionaryTrie dict;
+    dict.insert("cape", 1);
+    dict.insert("apple",  6);
+    dict.insert("ape", 6);
+    dict.insert( "applet", 8);
+    dict.insert("tall",  8);
+    dict.insert("tap", 5);
+    dict.insert( "tape", 7);
+    dict.insert( "app", 3);
 
+    vector<string> vec = dict.predictUnderscores("_p_", 2);
+    
+    ASSERT_EQ(vec.size(), 2);
+    ASSERT_EQ(vec.at(0), "ape");
+    ASSERT_EQ(vec.at(1), "app");
+ 
+}
 
 
 /* TODO */
