@@ -1,5 +1,6 @@
 /**
- * TODO: File HEADER
+ * Test Cases for DictionaryTrie
+ * Every function that is implemented in DictionaryTrie.cpp is tested
  *
  * Author: Andrew Masters, Abdulkhaliq Omar
  */
@@ -24,6 +25,65 @@ TEST(DictTrieTests, EMPTY_TEST) {
     ASSERT_EQ(dict.find("abrakadabra"), false);
 }
 
+TEST(DictTrieTests, TEST_FIND_ONE_WORD){
+    DictionaryTrie dict;
+    dict.insert("cape", 1);
+    dict.insert("apple",  6);
+    dict.insert("ape", 6);
+    dict.insert( "applet", 8);
+    dict.insert("tall",  8);
+    dict.insert("tap", 5);
+    dict.insert( "tape", 7);
+    
+    ASSERT_EQ(dict.find("ball"), false);
+
+
+}
+
+
+
+TEST(DictTrieTests, TEST_FIND) {
+    DictionaryTrie dict;
+    dict.insert("cape", 1);
+    dict.insert("apple",  6);
+    dict.insert("ape", 6);
+    dict.insert( "applet", 8);
+    dict.insert("tall",  8);
+    dict.insert("tap", 5);
+    dict.insert( "tape", 7);
+
+  ASSERT_EQ( dict.find("applet"), true);
+   ASSERT_EQ( dict.find("applett"), false);
+   ASSERT_EQ( dict.find("ape"), true);
+
+}
+
+TEST(DictTrieTests, TEST_INSERT_EMPTY_STRING) {
+    DictionaryTrie dict;
+    dict.insert("cape", 1);
+    dict.insert("apple",  6);
+    dict.insert("ape", 6);
+    dict.insert( "applet", 8);
+    dict.insert("tall",  8);
+    dict.insert("tap", 5);
+    dict.insert( "tape", 7);
+
+  ASSERT_EQ( dict.insert("", 10), false);
+  
+}
+TEST(DictTrieTests, TEST_INSERT_SAME_STRING) {
+    DictionaryTrie dict;
+    dict.insert("cape", 1);
+    dict.insert("apple",  6);
+    dict.insert("ape", 6);
+    dict.insert( "applet", 8);
+    dict.insert("tall",  8);
+    dict.insert("tap", 5);
+    dict.insert( "tape", 7);
+
+  ASSERT_EQ( dict.insert("", 10), false);
+  
+}
 /*TEST(DictTrieTests, TEST_COMPLETIONS) {
     DictionaryTrie dict;
     dict.insert("cape", 1);
@@ -44,21 +104,7 @@ TEST(DictTrieTests, EMPTY_TEST) {
   EXPECT_EQ(vec.at(2), apple);
 
 }
-TEST(DictTrieTests, TEST_FIND) {
-    DictionaryTrie dict;
-    dict.insert("cape", 1);
-    dict.insert("apple",  6);
-    dict.insert("ape", 6);
-    dict.insert( "applet", 8);
-    dict.insert("tall",  8);
-    dict.insert("tap", 5);
-    dict.insert( "tape", 7);
 
-  ASSERT_EQ( dict.find("applet"), true);
-   ASSERT_EQ( dict.find("applett"), false);
-   ASSERT_EQ( dict.find("ape"), true);
-
-}
 TEST(DictTrieTests, TEST_INSERT_TWICE) {
     DictionaryTrie dict;
     dict.insert("cape", 1);
@@ -70,21 +116,8 @@ TEST(DictTrieTests, TEST_INSERT_TWICE) {
     dict.insert( "tape", 7);
 
   ASSERT_EQ( dict.insert("applet", 8), false);
-
 }
-TEST(DictTrieTests, TEST_INSERT_EMPTY_STRING) {
-    DictionaryTrie dict;
-    dict.insert("cape", 1);
-    dict.insert("apple",  6);
-    dict.insert("ape", 6);
-    dict.insert( "applet", 8);
-    dict.insert("tall",  8);
-    dict.insert("tap", 5);
-    dict.insert( "tape", 7);
 
-  ASSERT_EQ( dict.insert("", 10), false);
-  
-}
 TEST(DictTrieTests, TEST_COMPLETIONS_NONE) {
     DictionaryTrie dict;
     dict.insert("cape", 1);
@@ -159,21 +192,7 @@ TEST(DictTrieTests, TEST_COMPLETIONS_VALID_PREFIX_NOT_TOP) {
  
 }*/
 
-TEST(DictTrieTests, TEST_FIND) {
-    DictionaryTrie dict;
-    dict.insert("cape", 1);
-    dict.insert("apple",  6);
-    dict.insert("ape", 6);
-    dict.insert( "applet", 8);
-    dict.insert("tall",  8);
-    dict.insert("tap", 5);
-    dict.insert( "tape", 7);
 
-  ASSERT_EQ( dict.find("applet"), true);
-   ASSERT_EQ( dict.find("apett"), false);
-   ASSERT_EQ( dict.find("ape"), true);
-
-}
 
 TEST(DictTrieTests, TEST_COMPLETIONS_WILDCARD) {
     DictionaryTrie dict;

@@ -4,7 +4,8 @@
  * UserId: cs30s2019ac
  * Date:    10/23/2019
  * Sources of Help: None
- *
+ * DictionaryTrie.cpp implements all functions that were declared in DictionaryTrie.hpp
+ * Helper funcitons are added to assist and use recursion on primary functions
  */
 #include "DictionaryTrie.hpp"
 #include <iostream>
@@ -32,7 +33,7 @@ TrieNode* DictionaryTrie::getPrefixRoot(TrieNode* root, string prefix, int charI
   		return getPrefixRoot( root->right, prefix, charIndex);
   	//if equal but we have more letter left in word traverse middle child 
   	//for next letter
-  	else if( prefix.length() - 1 > charIndex)
+  	else if( prefix.length() - 1  > charIndex)
   		return getPrefixRoot( root->middle, prefix, charIndex + 1);
   	//if equal and end of prefix
   	else 
@@ -137,6 +138,11 @@ bool DictionaryTrie::insert(string word, unsigned int freq){
 bool DictionaryTrie::find(string word) const{
   //check if word was found
   TrieNode* node  = getPrefixRoot(root, word, 0);
+  if(node == nullptr){
+	return false;
+  }
+
+  cout<<node->letter<<node->wordEnd<<endl;
   return node->wordEnd;
 }
 
