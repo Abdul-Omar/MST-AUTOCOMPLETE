@@ -51,36 +51,41 @@ TrieNode* DictionaryTrie::getPrefixRoot(TrieNode* root, string prefix, int charI
 bool DictionaryTrie::insertHelper(string word, unsigned int freq, TrieNode ** node, int i){
 	
   if(*node == nullptr){
-	    (*node) = new TrieNode(word[i]);
-	}
-	//cout << "dsakdmslka " << (*node)->letter << endl;	
-  //if char is less than current node char
-	if(word[i] < (*node)->letter){
-	    insertHelper(word, freq, &((*node)->left), i);
-	} 
+	    
+    (*node) = new TrieNode(word[i]);
+  }
+
+  if(word[i] < (*node)->letter){
+  
+    insertHelper(word, freq, &((*node)->left), i);
+  } 
   //if char is greater than the current node char
   else if(word[i] > (*node)->letter){
-	    insertHelper(word, freq, &((*node)->right), i);
-	} 
+	    
+    insertHelper(word, freq, &((*node)->right), i);
+  } 
   //if equal
   else {
       //if last letter of string
-	    if(i == word.size() ){
-        //word already there
-		    if((*node)->wordEnd) return false;
-		     //otherwise
-        (*node)->freq = freq;
-		    (*node)->wordEnd = true;
-		   // cout << "inserting " << (*node)->letter << endl;
-		     return true;
-	    } 
+      if(i == word.size() - 1 ){
+        
+	//word already there
+	if((*node)->wordEnd) return false;
+	else {
+	  //otherwise
+          (*node)->freq = freq;
+          (*node)->wordEnd = true;
+          return true;
+	}
+      } 
       //if char is not last letter of word
       else {
-	    	insertHelper(word, freq, &((*node)->middle), i+1);
-	    }
-	 }
+	
+        insertHelper(word, freq, &((*node)->middle), i + 1);    
+      }
+  }
 
-	 return false;	
+  return false;	
 }
 
 /*
@@ -138,13 +143,9 @@ bool DictionaryTrie::insert(string word, unsigned int freq){
 bool DictionaryTrie::find(string word) const{
   //check if word was found
   TrieNode* node  = getPrefixRoot(root, word, 0);
-  if(node == nullptr){
-	return false;
-  }
-
-  cout<<node->letter<<node->wordEnd<<endl;
-  return node->wordEnd;
-}
+  
+  return node == nullptr ? false : node->wordEnd;
+ }
 
 /*
 * Function Name: predictCompletions()
@@ -277,22 +278,26 @@ void DictionaryTrie::getAllWords(TrieNode* root, string prefix, priority_queue<p
  * Return Value: true if successfully found, false otherwise
  */
 std::vector<string> DictionaryTrie::predictUnderscores(
-    string pattern, unsigned int numCompletions) {
+    
+  string pattern, unsigned int numCompletions) {
+  
+  //hold each  valid completion and its frequency
+  vector<pair<string, unsigned int>> vect;
+  
+  //valid completions to return
+  vector<string> completions;
+  
+  //get the completions
+  getWildCard( root, pattern, "",vect, 0); 
 
-	vector<pair<string, unsigned int>> vect;
-	vector<string> completions;
-
-
-        
-        getWildCard( root, pattern, "",vect, 0); 
-
-	cout<< "size of matchs found "<< vect.size()<<endl;
-        for( int i = 0; i < vect.size(); i++) {  
-	
-	  completions.emplace_back( vect[i].first);
-	
-	}
-        return completions;
+  cout<< "size of matchs found "<< vect.size()<<endl;
+ 
+  for( int i = 0; i < vect.size(); i++) {  
+    	
+    completions.emplace_back( vect[i].first);	
+  }
+  
+  return completions;
 }
 
 /*
@@ -312,56 +317,33 @@ DictionaryTrie::~DictionaryTrie() {
 void DictionaryTrie::getWildCard(TrieNode* root, string wildCard, string prefix, vector<pair<string, unsigned int>> & vect, unsigned int index) {   
 
   if(!root) return;//base case
+  
   if(!wildCard[index]) return;
   
   //if current letter is wildcard or current letter is less
   if( (wildCard[index] == '_' || wildCard[index] < root->letter)) {   
       
-     
-     //cout<< "wildCard search is now on the left "<< prefix<<endl;
-     /* if( wildCard.at(index) == '_') {  
-	  
-	     getWildCard( root-> left , wildCard, prefix,vect, index + 1);	  
-     }
-
-      else */
-    	     getWildCard( root->left, wildCard, prefix, vect, index);
-  
+    getWildCard( root->left, wildCard, prefix, vect, index);  
   }
+  
   //if current letter is wildcard or current letter is greater
   if( wildCard.at(index) == '_' || wildCard[index] > root->letter) {  
-         //cout<<"current node is :  " << root->letter<<endl;
-	  
-	  //cout<< "wildCard search is now on the right "<< prefix<<endl;
-
-	 
-	 /* if( wildCard.at(index) == '_') {  
-	  
-	     getWildCard( root-> right, wildCard, prefix,vect, index + 1);	  
-	  }
-          else*/
-             getWildCard( root-> right, wildCard, prefix,vect, index);
-  
+     getWildCard( root-> right, wildCard, prefix,vect, index);
   }
+ 
   //if current letter is wildcard or current letter is == to current node letter 
   if( (wildCard[index] == '_' || wildCard[index] == root->letter ) ) {  
          
-     //  cout<<"current node is :  " << root->letter<<endl;
- 
-      // cout<< "wildCard search is now on the middle :"<< prefix<<endl;
-      // cout << "Index is :  " <<index <<endl<< "wildcard.length : " << wildCard.length()<<endl;
-       
-       if( index == wildCard.length() - 1) {  
-         //cout<< root->letter <<" hello " << root->wordEnd <<endl;
-          //if(root->wordEnd) { 
-          //if(root->wordEnd) { 
+    if( index == wildCard.length() - 1) {  
+                
+      if(root->wordEnd) { 
       	
-            //cout<< "current match " << prefix + root->letter <<endl;
-      	    vect.emplace_back( make_pair( prefix + root->letter, root->freq)); 	 
-         //}       
+           vect.emplace_back( make_pair( prefix + root->letter, root->freq)); 	        
+     }       
      }
      else 
-	  getWildCard( root-> middle, wildCard, prefix + root->letter, vect, index + 1); 
+	  
+       getWildCard( root-> middle, wildCard, prefix + root->letter, vect, index + 1); 
   }
   
 }

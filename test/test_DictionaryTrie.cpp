@@ -213,5 +213,44 @@ TEST(DictTrieTests, TEST_COMPLETIONS_WILDCARD) {
  
 }
 
+TEST(DictTrieTests, TEST_COMPLETIONS_WILDCARD_2) {
+    DictionaryTrie dict;
+    dict.insert("cape", 1);
+    dict.insert("apple",  6);
+    dict.insert("ape", 6);
+    dict.insert( "applet", 8);
+    dict.insert("tall",  8);
+    dict.insert("tapp", 5);
+    dict.insert( "tape", 7);
+    dict.insert( "app", 3);
+
+    vector<string> vec = dict.predictUnderscores("t___", 3);
+    
+    ASSERT_EQ(vec.size(), 3);
+    ASSERT_EQ(vec.at(0), "tape");
+    ASSERT_EQ(vec.at(1), "tapp");
+    ASSERT_EQ(vec.at(2), "tall");
+}
+
+TEST(DictTrieTests, TEST_COMPLETIONS_WILDCARD_3) {
+    DictionaryTrie dict;
+    dict.insert("cape", 1);
+    dict.insert("apple",  6);
+    dict.insert("ape", 6);
+    dict.insert( "applet", 8);
+    dict.insert("tall",  8);
+    dict.insert("tapp", 5);
+    dict.insert( "tape", 7);
+    dict.insert( "app", 3);
+
+    vector<string> vec = dict.predictUnderscores("____", 3);
+    
+    ASSERT_EQ(vec.size(), 4);
+    ASSERT_EQ(vec.at(0), "tape");
+    ASSERT_EQ(vec.at(1), "tapp");
+    ASSERT_EQ(vec.at(2), "tall");
+    ASSERT_EQ(vec.at(3), "cape");
+
+}
 
 /* TODO */

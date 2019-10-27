@@ -5,6 +5,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <string.h>
 #include "DictionaryTrie.hpp"
 #include "util.hpp"
 
@@ -73,7 +74,19 @@ int main(int argc, char** argv) {
         cout << "Enter a number of completions:" << endl;
         cin >> numberOfCompletions;
         //get the data
-        vector<string> data =  dt->predictCompletions(word, numberOfCompletions);
+	
+        vector<string> data;
+	size_t found = word.find('_');
+        //check if there is wildcard, use wildcard autocomplete
+	if(found != string::npos){ 
+	
+          data = dt->predictUnderscores(word, numberOfCompletions);
+	}
+	//otherwise use regular autocomplete
+	else {
+	  
+          data = dt->predictCompletions(word, numberOfCompletions);
+	}
        
        	//print it out
         for( int i = 0; i < data.size(); i++){  
