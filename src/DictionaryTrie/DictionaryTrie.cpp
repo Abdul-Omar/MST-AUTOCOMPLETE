@@ -55,6 +55,10 @@ bool DictionaryTrie::insertHelper(string word, unsigned int freq, TrieNode ** no
     (*node) = new TrieNode(word[i]);
   }
 
+  if(freq > (*node)->maxBelow){
+    (*node)->maxBelow = freq;
+  } 
+
   if(word[i] < (*node)->letter){
   
     insertHelper(word, freq, &((*node)->left), i);
@@ -174,7 +178,7 @@ bool DictionaryTrie::find(string word) const{
 */
 vector<string> DictionaryTrie::predictCompletions(string prefix,
                                      unsigned int numCompletions){
-   /* 
+    
     	
      vector<pair<unsigned int, string>> completions;//number of completions
     
@@ -196,12 +200,13 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
        //add to the completions
        pq.emplace(make_pair(node->freq, prefix));
     }
+    
     //recursively get all the words in the subtree
-    getAllWords( node->middle, prefix, pq);
+    getAllWords( node->middle, prefix, pq, numCompletions);
     //no valid completions
     if(pq.size() < 1) return vec;
 
-     //check if not enough valid words
+    //check if not enough valid words
     if(pq.size() < numCompletions) {  
     
       numCompletions = pq.size();
@@ -211,61 +216,93 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
     pair<unsigned int, string> top;
     pair<unsigned int, string> top2;
     
-    for(int i = 0; i < pq.size() - 2; i++){
+    while( !pq.empty()){
 	top = pq.top();
 	pq.pop();
 
-       if(!completions.empty()){
-	  top2 = completions.at(i-1);
-       	  if(top.first == top2.first) {   
+       if(!pq.empty()){
+	 
+	  top2 = pq.top();
+	  pq.pop();
+       	  //if equal freq
+	  if(top.first == top2.first) {   
        
             if( top.second > top2.second) {
-	      completions.at(i-1) = top2;
-      	      completions.emplace_back(make_pair(top.second.substr(0, top.second.length() -1), 
-                                  top.first)); 
+	      vec.emplace_back(top2.second);
+              vec.emplace_back(top.second);                  
+	    }
+	    else { 
+	      vec.emplace_back(top.second); 
+             vec.emplace_back(top2.second); 
+	    
 	    }
  	  }
-            else {
-	      completions.at(i-1) = top;
-      	      completions.emplace_back(make_pair(top2.second.substr(0, top2.second.length() -1), 
-                                  top2.first)); 
-       }  
+          else {
+	     vec.emplace_back(top.second);
+             vec.emplace_back(top2.second); 	    
+         }  
 
-       }	       
+       }
+       else {  
+         vec.emplace_back(top.second); 
+ 
+         //string last = vec.size() -1;
+	 //if(last 
+       }       
     }   
        
-      
-   //return the top completions
-   for( int i = 0; i < completions.size(); i++) {
-     vec.emplace_back(completions[i].second);    
-   }
-  
-   return vec;*/
+    
+   return vec;
 }
 
 
-void DictionaryTrie::getAllWords(TrieNode* root, string prefix, priority_queue<pair<unsigned int, string>> & pq) { 
+void DictionaryTrie::getAllWords(TrieNode* root, string prefix, priority_queue< pair<unsigned int, string>, vector<pair<unsigned int, string>>, comparator> & pq, int numCompletions) { 
    
-   /*if(root != nullptr) {
+   if(root != nullptr) {
 
-     //cout<< root->letter<<endl;
-        //for each node, check if it is a word node
+     
+     //for each node, check if it is a word node
      if(root->wordEnd) {  
-       pq.emplace( make_pair( root->freq, prefix + root->letter ));//add to list if a valid word	   
+       if(pq.size() == numCompletions) {
+	 pair<unsigned int , string> top = pq.top();
+	 if(top.first < root->freq){
+           pq.pop();
+           pq.emplace( make_pair( root->freq, prefix + root->letter ));//add to list if a valid word	 
+	 }
+	 else if( top.first == root->freq) { 
+	   	    
+	     pq.emplace( make_pair( root->freq, prefix + root->letter ));
+	     numCompletions += 1;
+	 }
+       }
+       else {
+	 pq.emplace( make_pair( root->freq, prefix + root->letter ));
+       }
+            
      }
 
+     int maxMiddle, maxRight, maxLeft;
+
+     maxMiddle = root->middle->maxBelow;
+     maxLeft = root->left->maxBelow;
+     maxRight = root->right->maxBelow;
+
+     int maxBelow = max( maxMiddle, maxLeft);
+
+     maxBelow = max(maxBelow, maxRight);
+    
+     if(root->maxBelow >= maxBelow) {  
+     
+     
+     }
      //traverse left subtree
-     getAllWords(root->left, prefix, pq);
+     getAllWords(root->left, prefix, pq, numCompletions);
   
      //traverse right subtree
-     getAllWords(root->right, prefix, pq);
+     getAllWords(root->right, prefix, pq, numCompletions);
    
-     
-
-     getAllWords(root->middle, (prefix + root->letter), pq);
-   }
-*/   
- 
+     getAllWords(root->middle, (prefix + root->letter), pq, numCompletions);
+   }    
 }
 /*
  * Function Name: predictUnderscores()
@@ -279,7 +316,7 @@ void DictionaryTrie::getAllWords(TrieNode* root, string prefix, priority_queue<p
  */
 std::vector<string> DictionaryTrie::predictUnderscores(
     
-  string pattern, unsigned int numCompletions) {
+              string pattern, unsigned int numCompletions) {
   
   //hold each  valid completion and its frequency
   vector<pair<string, unsigned int>> vect;

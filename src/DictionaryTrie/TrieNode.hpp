@@ -17,10 +17,12 @@ class TrieNode {
       char letter;
       unsigned int freq;
       bool wordEnd;
+      int maxBelow;
 
       TrieNode(const char l) : letter(l) {
         freq = 0;
 	wordEnd = false;
+	maxBelow = 0;
 
 	left = right = middle = nullptr;
       }

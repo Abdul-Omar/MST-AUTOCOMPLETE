@@ -84,7 +84,7 @@ TEST(DictTrieTests, TEST_INSERT_SAME_STRING) {
   ASSERT_EQ( dict.insert("", 10), false);
   
 }
-/*TEST(DictTrieTests, TEST_COMPLETIONS) {
+TEST(DictTrieTests, TEST_COMPLETIONS) {
     DictionaryTrie dict;
     dict.insert("cape", 1);
     dict.insert("apple",  6);
@@ -190,7 +190,7 @@ TEST(DictTrieTests, TEST_COMPLETIONS_VALID_PREFIX_NOT_TOP) {
 
 
  
-}*/
+}
 
 
 
