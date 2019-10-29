@@ -195,7 +195,7 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
     
     //if prefix is valid word itself
     if(node && node->wordEnd) { 
-	 cout<< "prefix is a word "<< node->wordEnd<<endl;   
+	 
        //add to the completions
        pq.emplace(make_pair(node->freq, prefix));
     }
@@ -290,8 +290,7 @@ void DictionaryTrie::getAllWords(TrieNode* root, string prefix, priority_queue< 
  * Return Value: true if successfully found, false otherwise
  */
 std::vector<string> DictionaryTrie::predictUnderscores(
-    
-              string pattern, unsigned int numCompletions) {
+  	string pattern, unsigned int numCompletions) {
 	
   
      //hold each  valid completion and its frequency
