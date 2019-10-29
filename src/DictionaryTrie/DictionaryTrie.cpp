@@ -186,6 +186,7 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
 
     
     if(!root) return vec; //empty tree	
+    if(numCompletions < 1 ) return vec;
         
     //get root of prefix subtrie
     TrieNode* node = getPrefixRoot(root, prefix, 0);
@@ -291,14 +292,16 @@ void DictionaryTrie::getAllWords(TrieNode* root, string prefix, priority_queue< 
 std::vector<string> DictionaryTrie::predictUnderscores(
     
               string pattern, unsigned int numCompletions) {
+	
   
      //hold each  valid completion and its frequency
      vector<string> vec;
-    
+    if(numCompletions < 1) return vec;
     vector<pair<string, unsigned int>> completions;
 
     vector<pair<string, unsigned int>> topCompletions;
-
+    
+    
     //get the completions
     getWildCard( root, pattern, "", completions, 0); 
 
