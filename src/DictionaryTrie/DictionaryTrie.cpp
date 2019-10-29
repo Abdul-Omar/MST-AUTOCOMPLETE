@@ -226,7 +226,7 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
 }
 
 
-void DictionaryTrie::getAllWords(TrieNode* root, string prefix, priority_queue< pair<unsigned int, string>, vector<pair<unsigned int, string>>, comparator> & pq, int numCompletions, unsigned int currentMax) { 
+void DictionaryTrie::getAllWords(TrieNode* root, string prefix, priority_queue< pair<unsigned int, string>, vector<pair<unsigned int, string>>, comparator> & pq, int numCompletions) { 
    
    if(root != nullptr) {
 
