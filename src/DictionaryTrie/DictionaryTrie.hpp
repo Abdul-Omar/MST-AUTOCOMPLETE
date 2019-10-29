@@ -14,6 +14,21 @@
 
 using namespace std;
 
+class comparator {
+public:
+    int operator()(std::pair<unsigned int, std::string>& a,
+                    std::pair<unsigned int, std::string>& b) const {
+
+        if (a.first == b.first){ 
+	
+	  return a.second < b.second;
+	}
+        else{
+         
+	  return (a.first > b.first);
+       }
+    }
+};
 /**
  * The class for a dictionary ADT, implemented as either
  * a mulit-way trie or a ternary search tree.
@@ -29,7 +44,7 @@ class DictionaryTrie {
     TrieNode* getPrefixRoot(TrieNode* root, string prefix, int charIndex)const;
 
     // Second helper function for predictCompletions; uses recursion to find all words starting from prefix nodes
-    void getAllWords(TrieNode* root, string prefix, priority_queue<pair<unsigned int, string>> &pq, int numCompletions);
+    void getAllWords(TrieNode* root, string prefix,priority_queue< pair<unsigned int, string>, vector<pair<unsigned int, string>>, comparator> & pq, int numCompletions);
 
     // Helper function for insert; uses recursion to insert TrieNodes
     bool insertHelper(string word, unsigned int freq, TrieNode ** node, int i);
@@ -63,18 +78,5 @@ class DictionaryTrie {
     /* Deconstructor, deletes all nodes and the root */
     ~DictionaryTrie();
 };
-class comparator {
-public:
-    int operator()(std::pair<unsigned int, std::string>& a,
-                    std::pair<unsigned int, std::string>& b) const {
 
-        if (a.first == b.first){ 
-	
-	  return a.second < b.second;
-	}
-        else{
-         
-	  return (a.first < b.first)
-       }
-};
 #endif

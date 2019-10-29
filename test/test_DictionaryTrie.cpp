@@ -213,7 +213,7 @@ TEST(DictTrieTests, TEST_COMPLETIONS_WILDCARD) {
  
 }
 
-TEST(DictTrieTests, TEST_COMPLETIONS_WILDCARD_2) {
+TEST(DictTrieTests, TEST_COMPLETIONS_WILDCARD_ORDERED) {
     DictionaryTrie dict;
     dict.insert("cape", 1);
     dict.insert("apple",  6);
@@ -227,12 +227,12 @@ TEST(DictTrieTests, TEST_COMPLETIONS_WILDCARD_2) {
     vector<string> vec = dict.predictUnderscores("t___", 3);
     
     ASSERT_EQ(vec.size(), 3);
-    ASSERT_EQ(vec.at(0), "tape");
-    ASSERT_EQ(vec.at(1), "tapp");
-    ASSERT_EQ(vec.at(2), "tall");
+    ASSERT_EQ(vec.at(0), "tall");
+    ASSERT_EQ(vec.at(1), "tape");
+    ASSERT_EQ(vec.at(2), "tapp");
 }
 
-TEST(DictTrieTests, TEST_COMPLETIONS_WILDCARD_3) {
+TEST(DictTrieTests, TEST_COMPLETIONS_WILDCARD_ORDERED_2) {
     DictionaryTrie dict;
     dict.insert("cape", 1);
     dict.insert("apple",  6);
@@ -245,11 +245,10 @@ TEST(DictTrieTests, TEST_COMPLETIONS_WILDCARD_3) {
 
     vector<string> vec = dict.predictUnderscores("____", 3);
     
-    ASSERT_EQ(vec.size(), 4);
-    ASSERT_EQ(vec.at(0), "tape");
-    ASSERT_EQ(vec.at(1), "tapp");
-    ASSERT_EQ(vec.at(2), "tall");
-    ASSERT_EQ(vec.at(3), "cape");
+    ASSERT_EQ(vec.size(), 3);
+    ASSERT_EQ(vec.at(0), "tall");
+    ASSERT_EQ(vec.at(1), "tape");
+    ASSERT_EQ(vec.at(2), "tapp");
 
 }
 

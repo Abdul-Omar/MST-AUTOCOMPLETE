@@ -1,6 +1,6 @@
 /*  
  * Filename: DictionaryTrie.cpp
- * Author: Abdulkhaliq Omar/Andrew Master
+ * Author: Abdulkhaliq Omar/Andrew Masters
  * UserId: cs30s2019ac
  * Date:    10/23/2019
  * Sources of Help: None
@@ -180,11 +180,8 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
                                      unsigned int numCompletions){
     
     	
-     vector<pair<unsigned int, string>> completions;//number of completions
-    
-     priority_queue<pair<unsigned int, string>> pq;
- 
-    vector<string> vec;//the string of prefix completions to return
+      priority_queue< pair<unsigned int, string>, vector<pair<unsigned int, string>>, comparator>  pq;
+      vector<string> vec(0);//the string of prefix completions to return
 
 
     
@@ -196,7 +193,8 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
     if(!node) return vec; //prefix does not exist    
     
     //if prefix is valid word itself
-    if(node && node->wordEnd) {    
+    if(node && node->wordEnd) { 
+	 cout<< "prefix is a word "<< node->wordEnd<<endl;   
        //add to the completions
        pq.emplace(make_pair(node->freq, prefix));
     }
@@ -212,63 +210,38 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
       numCompletions = pq.size();
     }  
     
-    //sort the vectors in order of increasing frequency and alphabetically if tied
+   vec.resize(numCompletions);
+   //sort the vectors in order of increasing frequency and alphabetically if tied
     pair<unsigned int, string> top;
-    pair<unsigned int, string> top2;
     
-    while( !pq.empty()){
+    for(int i = (numCompletions-1); i >= 0; i--){
 	top = pq.top();
 	pq.pop();
-
-       if(!pq.empty()){
-	 
-	  top2 = pq.top();
-	  pq.pop();
-       	  //if equal freq
-	  if(top.first == top2.first) {   
-       
-            if( top.second > top2.second) {
-	      vec.emplace_back(top2.second);
-              vec.emplace_back(top.second);                  
-	    }
-	    else { 
-	      vec.emplace_back(top.second); 
-             vec.emplace_back(top2.second); 
-	    
-	    }
- 	  }
-          else {
-	     vec.emplace_back(top.second);
-             vec.emplace_back(top2.second); 	    
-         }  
-
-       }
-       else {  
-         vec.emplace_back(top.second); 
+	vec[i] = top.second;	
+    }
  
-         //string last = vec.size() -1;
-	 //if(last 
-       }       
-    }   
        
     
    return vec;
 }
 
 
-void DictionaryTrie::getAllWords(TrieNode* root, string prefix, priority_queue< pair<unsigned int, string>, vector<pair<unsigned int, string>>, comparator> & pq, int numCompletions) { 
+void DictionaryTrie::getAllWords(TrieNode* root, string prefix, priority_queue< pair<unsigned int, string>, vector<pair<unsigned int, string>>, comparator> & pq, int numCompletions, unsigned int currentMax) { 
    
    if(root != nullptr) {
 
-     
      //for each node, check if it is a word node
      if(root->wordEnd) {  
+      
        if(pq.size() == numCompletions) {
-	 pair<unsigned int , string> top = pq.top();
+	 
+	  pair<unsigned int , string> top = pq.top();
+	 
 	 if(top.first < root->freq){
            pq.pop();
            pq.emplace( make_pair( root->freq, prefix + root->letter ));//add to list if a valid word	 
 	 }
+	
 	 else if( top.first == root->freq) { 
 	   	    
 	     pq.emplace( make_pair( root->freq, prefix + root->letter ));
@@ -276,12 +249,15 @@ void DictionaryTrie::getAllWords(TrieNode* root, string prefix, priority_queue< 
 	 }
        }
        else {
-	 pq.emplace( make_pair( root->freq, prefix + root->letter ));
+	 
+	  pq.emplace( make_pair( root->freq, prefix + root->letter ));
+	 
        }
             
      }
 
-     int maxMiddle, maxRight, maxLeft;
+   
+    /*int maxMiddle, maxRight, maxLeft;
 
      maxMiddle = root->middle->maxBelow;
      maxLeft = root->left->maxBelow;
@@ -290,17 +266,15 @@ void DictionaryTrie::getAllWords(TrieNode* root, string prefix, priority_queue< 
      int maxBelow = max( maxMiddle, maxLeft);
 
      maxBelow = max(maxBelow, maxRight);
-    
-     if(root->maxBelow >= maxBelow) {  
-     
-     
-     }
+    */
+   
      //traverse left subtree
      getAllWords(root->left, prefix, pq, numCompletions);
   
      //traverse right subtree
      getAllWords(root->right, prefix, pq, numCompletions);
-   
+
+     //traverse middle subtree
      getAllWords(root->middle, (prefix + root->letter), pq, numCompletions);
    }    
 }
@@ -318,23 +292,51 @@ std::vector<string> DictionaryTrie::predictUnderscores(
     
               string pattern, unsigned int numCompletions) {
   
-  //hold each  valid completion and its frequency
-  vector<pair<string, unsigned int>> vect;
-  
-  //valid completions to return
-  vector<string> completions;
-  
-  //get the completions
-  getWildCard( root, pattern, "",vect, 0); 
+     //hold each  valid completion and its frequency
+     vector<string> vec;
+    
+    vector<pair<string, unsigned int>> completions;
 
-  cout<< "size of matchs found "<< vect.size()<<endl;
+    vector<pair<string, unsigned int>> topCompletions;
+
+    //get the completions
+    getWildCard( root, pattern, "", completions, 0); 
+
  
-  for( int i = 0; i < vect.size(); i++) {  
-    	
-    completions.emplace_back( vect[i].first);	
-  }
+    //no valid completions
+    if(completions.size() < 1) return vec;
+    
+    //sort the vectors in order of increasing frequency and alphabetically if tied	
+    sort(completions.begin(), completions.end(), 
+       [](const pair<string,unsigned int> &left, const std::pair<string ,unsigned int> &right) {
+       if(left.second != right.second) {
+         return left.second > right.second;
+      }
+      else { 
+        return left.first < right.first;
+      }
+    });
+   
+    //check if not enough valid words
+    if(completions.size() < numCompletions) {  
+    
+      numCompletions = completions.size();
+    }   
+    //get the top completions
+    for( int i = 0 ; i < numCompletions; i++) {  
+     
+      topCompletions.emplace_back(make_pair(completions[i].first, completions[i].second));      
+   }
+   //return the top completions
+   for( int i = 0; i < topCompletions.size(); i++) { 
+    
+     vec.emplace_back(topCompletions[i].first);    
+   }
   
-  return completions;
+   return vec;
+
+
+
 }
 
 /*
