@@ -227,7 +227,7 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
 }
 
 
-void DictionaryTrie::getAllWords(TrieNode* root, string prefix, priority_queue< pair<unsigned int, string>, vector<pair<unsigned int, string>>, comparator> & pq, int numCompletions) { 
+void DictionaryTrie::getAllWords(TrieNode* root, string prefix, priority_queue< pair<unsigned int, int, string> & pq, int numCompletions, bool maxFound) { 
    
    if(root != nullptr) {
 
@@ -251,21 +251,60 @@ void DictionaryTrie::getAllWords(TrieNode* root, string prefix, priority_queue< 
        }*/
        //else {
 	 
-	  pq.emplace( make_pair( root->freq, prefix + root->letter ));
+//	  pq.emplace( make_pair( root->freq, prefix + root->letter ));
 	 
       // }
             
     // }
-    
-   
-     //traverse left subtree
-     getAllWords(root->left, prefix, pq, numCompletions);
-  
-     //traverse right subtree
-     getAllWords(root->right, prefix, pq, numCompletions);
+    //
+	//Check if queue is full and max at root is less than or equal; return if true 
+	if(pq.size() == numCompletions){
+	    pair<unsigned int, int, unsigned int> top = pq.top();
+	    if(pq.top.second >= root->maxBelow){
+		return;
+	    }
+	}
 
-     //traverse middle subtree
-     getAllWords(root->middle, (prefix + root->letter), pq, numCompletions);
+	//Check if end of word
+	if(root->wordEnd){
+	    //Check if queue is full
+	    if(pq.size() == numCompletions){
+		pair<unsigned int, int, unsigned int> top = pq.top();
+		//If frequency of top of queue is less than the root frequency, add the word and pop the top
+	    	if(top.first < root->freq){
+	    	    pq.emplace( make_pair( root->freq, root->maxBelow, prefix + root->letter ));
+	 	    pq.pop()
+	    	}
+
+	    }
+	    //If queue is not full, set maxFound to true if queue is empty and add the word regardless
+	    else {
+	        if(pq.empty()) maxFound = true;
+	        pq.emplace( make_pair( root->freq, root->maxBelow, prefix + root->letter ));
+
+	    }
+	   
+	}
+
+	//traverse left subtree
+	if(root->maxBelow == root->left->maxBelow || maxFound){
+           getAllWords(root->left, prefix, pq, numCompletions);
+	}
+
+	//traverse right subtree
+	if(root->maxBelow == root->right->maxBelow || maxFound){
+           getAllWords(root->right, prefix, pq, numCompletions);
+	}
+
+	//traverse middle subtree
+	if(root->maxBelow == root->left->maxBelow || maxFound){
+           getAllWords(root->left, prefix, pq, numCompletions);
+	}
+
+
+   
+       pq.emplace( make_pair( root->freq, root->maxBelow, prefix + root->letter ));
+
    }    
 }
 /*
