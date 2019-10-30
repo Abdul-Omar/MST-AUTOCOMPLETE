@@ -232,7 +232,7 @@ void DictionaryTrie::getAllWords(TrieNode* root, string prefix, priority_queue< 
    if(root != nullptr) {
 
      //for each node, check if it is a word node
-     if(root->wordEnd) {  
+    /* if(root->wordEnd) {  
       
        if(pq.size() == numCompletions) {
 	 
@@ -248,26 +248,15 @@ void DictionaryTrie::getAllWords(TrieNode* root, string prefix, priority_queue< 
 	     pq.emplace( make_pair( root->freq, prefix + root->letter ));
 	     numCompletions += 1;
 	 }
-       }
-       else {
+       }*/
+       //else {
 	 
 	  pq.emplace( make_pair( root->freq, prefix + root->letter ));
 	 
-       }
+      // }
             
-     }
-
-   
-    /*int maxMiddle, maxRight, maxLeft;
-
-     maxMiddle = root->middle->maxBelow;
-     maxLeft = root->left->maxBelow;
-     maxRight = root->right->maxBelow;
-
-     int maxBelow = max( maxMiddle, maxLeft);
-
-     maxBelow = max(maxBelow, maxRight);
-    */
+    // }
+    
    
      //traverse left subtree
      getAllWords(root->left, prefix, pq, numCompletions);
