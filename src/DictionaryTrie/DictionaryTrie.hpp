@@ -1,7 +1,12 @@
-/**
- * TODO: File Header
- *
- * Author: Andrew Masters, Abdulkhaliq Omar
+/*  
+ * Filename: DictionaryTrie.hpp
+ * Author: Abdulkhaliq Omar/Andrew Masters
+ * UserId: cs30s2019ac
+ * Date:    10/23/2019
+ * Sources of Help: None
+ * DictionaryTrie.hpp defines classes Comparator(for priority queue comparison) and
+ * DictionaryTrie(TST for autocomplete) and defines all functions inside DictionaryTrie
+ * that are fully implemented in DictionaryTrie.cpp
  */
 #ifndef DICTIONARY_TRIE_HPP
 #define DICTIONARY_TRIE_HPP
@@ -14,17 +19,21 @@
 
 using namespace std;
 
-class comparator {
+/*
+ * Compare class for priority queue; compares elements
+ */
+class Comparator {
 public:
     int operator()(std::pair<unsigned int, std::string>& a,
                     std::pair<unsigned int, std::string>& b) const {
-
+	
+	//compare frequency first
         if (a.first == b.first){ 
 	
 	  return a.second < b.second;
 	}
         else{
-         
+          //sort alphabetically 
 	  return (a.first > b.first);
        }
     }
@@ -46,7 +55,7 @@ class DictionaryTrie {
     TrieNode* getPrefixRoot(TrieNode* root, string prefix, int charIndex)const;
 
     // Second helper function for predictCompletions; uses recursion to find all words starting from prefix nodes
-    void getAllWords(TrieNode* root, string prefix,  priority_queue< pair<unsigned int, string>, vector<pair<unsigned int, string>>, comparator> & pq,
+    void getAllWords(TrieNode* root, string prefix,  priority_queue< pair<unsigned int, string>, vector<pair<unsigned int, string>>, Comparator> & pq,
   int numCompletions);
 
     // Helper function for insert; uses recursion to insert TrieNodes

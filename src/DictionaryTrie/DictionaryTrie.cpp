@@ -114,6 +114,7 @@ void DictionaryTrie::deleteAll(TrieNode* node){
 	delete node;
     }
 
+
     /*
  * Function Name: DictionaryTrie()
  * Function Prototype: DictionaryTrie();
@@ -123,6 +124,8 @@ void DictionaryTrie::deleteAll(TrieNode* node){
 DictionaryTrie::DictionaryTrie(){
 	root = nullptr;
 }
+
+
 /*
  * Function Name: insert()
  * Function Prototype:bool DictionaryTrie::bool DictionaryTrie::insert(string word, unsigned int freq)
@@ -138,6 +141,8 @@ bool DictionaryTrie::insert(string word, unsigned int freq){
 	
   return insertHelper(word, freq, &root, 0);
 }
+
+
 /*
  * Function Name: find()
  * Function Prototype: bool DictionaryTrie::find(string word) const
@@ -153,6 +158,7 @@ bool DictionaryTrie::find(string word) const{
   
   return node == nullptr ? false : node->wordEnd;
  }
+
 
 /*
 * Function Name: predictCompletions()
@@ -181,13 +187,10 @@ bool DictionaryTrie::find(string word) const{
 */
 vector<string> DictionaryTrie::predictCompletions(string prefix,
                                      unsigned int numCompletions){
-    
-    	
-      priority_queue< pair<unsigned int, string>, vector<pair<unsigned int, string>>, comparator>  pq;
-     
       
-       vector<string> vec(0);//the string of prefix completions to return
-
+    priority_queue< pair<unsigned int, string>, vector<pair<unsigned int, string>>, Comparator>  pq;
+      
+    vector<string> vec(0);//the string of prefix completions to return
 
     
     if(!root) return vec; //empty tree	
@@ -224,8 +227,6 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
 	pq.pop();
 	vec[i] = top.second;	
     }
- 
-       
     
    return vec;
 }
@@ -233,8 +234,8 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
 
 /*
 * Function Name: getAllWords()
-* Function Prototype: getAllWords(TrieNode* root, string prefix,  priority_queue< pair<unsigned int, string>, vector<pair<unsigned int, string>>, comparator> & pq,
-                  int numCompletions, bool maxFound)
+* Function Prototype: getAllWords(TrieNode* root, string prefix,  priority_queue< pair<unsigned int, string>,
+* 		vector<pair<unsigned int, string>>, comparator> & pq, int numCompletions, bool maxFound)
 * Description:*Parameters:
             root- the root of the tree
             prefix - the prefix whose completions to search for
@@ -245,8 +246,8 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
  * Return Value: NONE
 */
 
-void DictionaryTrie::getAllWords(TrieNode* root, string prefix,  priority_queue< pair<unsigned int, string>, vector<pair<unsigned int, string>>, comparator> & pq,
- int numCompletions) { 
+void DictionaryTrie::getAllWords(TrieNode* root, string prefix,  priority_queue< pair<unsigned int, string>,
+		vector<pair<unsigned int, string>>, Comparator> & pq, int numCompletions) { 
    
    if(root != nullptr) {
 	  
@@ -280,15 +281,19 @@ void DictionaryTrie::getAllWords(TrieNode* root, string prefix,  priority_queue<
 	    }
 	   
 	}
-     
 	
+	//traverse left sub-tree
         getAllWords(root->left, prefix, pq, numCompletions);
 
+	//traverse right sub-tree
         getAllWords(root->right, prefix, pq, numCompletions);
 
+	//traverse middle sub-tree
         getAllWords(root->middle, prefix + root->letter, pq, numCompletions);
    }    
 }
+
+
 /*
  * Function Name: predictUnderscores()
  * Function Prototype: vector<string> DictionaryTrie::predictUnderscores(
