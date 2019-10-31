@@ -79,9 +79,6 @@ bool DictionaryTrie::insertHelper(string word, unsigned int freq, TrieNode ** no
 	  //otherwise
           (*node)->freq = freq;
           (*node)->wordEnd = true;
-	  if(root->middle  == nullptr && root->right == nullptr && root->left == nullptr)
-	   root->maxBelow  = freq;
-	   
           return true;
 	}
       } 
@@ -206,7 +203,7 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
     }
     
     //recursively get all the words in the subtree
-    getAllWords( node->middle, prefix, pq, numCompletions);
+    getAllWords( node->middle, prefix, pq, numCompletions, false);
     //no valid completions
     if(pq.size() < 1) return vec;
 
@@ -219,6 +216,7 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
    vec.resize(numCompletions);
    //sort the vectors in order of increasing frequency and alphabetically if tied
     pair<unsigned int, string> top;
+    
     for(int i = (numCompletions-1); i >= 0; i--){
 	top = pq.top();
 	pq.pop();
@@ -231,25 +229,11 @@ vector<string> DictionaryTrie::predictCompletions(string prefix,
 }
 
 
-/*
-* Function Name: getAllWords()
-* Function Prototype: getAllWords(TrieNode* root, string prefix,  priority_queue< pair<unsigned int, string>, vector<pair<unsigned int, string>>, comparator> & pq,
-                  int numCompletions, bool maxFound)
-* Description:*Parameters:
-            root- the root of the tree
-            prefix - the prefix whose completions to search for
-            numCompletions - the number of search results
-	    pq-holds requireed number of completions
-	    numCompletions = required  number of completions
-            
- * Return Value: NONE
-*/
-
 void DictionaryTrie::getAllWords(TrieNode* root, string prefix,  priority_queue< pair<unsigned int, string>, vector<pair<unsigned int, string>>, comparator> & pq,
- int numCompletions) { 
+ int numCompletions, bool maxFound) { 
    
    if(root != nullptr) {
-	  
+    
 	//Check if queue is full and max at root is less than or equal; return if true 
 	if(pq.size() == numCompletions){
 	    
@@ -261,13 +245,14 @@ void DictionaryTrie::getAllWords(TrieNode* root, string prefix,  priority_queue<
 
 	//Check if end of word
 	if(root->wordEnd){
+	    
 	    //Check if queue is full
 	    if(pq.size() == numCompletions){
 		
 		pair<unsigned int, string> top = pq.top();
 	
 		//If frequency of top of queue is less than the root frequency, add the word and pop the top
-	    	if(top.first <= root->freq){
+	    	if(top.first < root->freq){
 	    	    pq.emplace( make_pair( root->freq,  prefix + root->letter ));
 	 	    pq.pop();
 	    	}
@@ -275,18 +260,33 @@ void DictionaryTrie::getAllWords(TrieNode* root, string prefix,  priority_queue<
 	    }
 	    //If queue is not full, set maxFound to true if queue is empty and add the word regardless
 	    else {
+	       
+	        if(pq.empty()) maxFound = true;
+	       
 	           pq.emplace( make_pair( root->freq, prefix + root->letter ));
 
 	    }
 	   
 	}
-     
-	
-        getAllWords(root->left, prefix, pq, numCompletions);
 
-        getAllWords(root->right, prefix, pq, numCompletions);
+	//traverse left subtree
+	if((root->left && (root->maxBelow == root->left->maxBelow)) || maxFound){
+           getAllWords(root->left, prefix, pq, numCompletions, maxFound);
+	}
 
-        getAllWords(root->middle, prefix + root->letter, pq, numCompletions);
+	//traverse right subtree
+	if((root->right && (root->maxBelow == root->right->maxBelow)) || maxFound){
+           getAllWords(root->right, prefix, pq, numCompletions, maxFound);
+	}
+
+	//traverse middle subtree
+	if((root->left && (root->maxBelow == root->left->maxBelow)) || maxFound){
+           getAllWords(root->left, prefix, pq, numCompletions, maxFound);
+	}
+
+
+   
+
    }    
 }
 /*
@@ -364,19 +364,6 @@ DictionaryTrie::~DictionaryTrie() {
 	deleteAll(root);
 }
 
-/*
-* Function Name: getWildCard()
-* Function Prototype: getWildCard(TrieNode* root, string wildCard, string prefix, vector<pair<string, unsigned int>> & vect, unsigned int index) 
-* Description:*Parameters:
-            root- the root of the tree
-	    wilcard -string containing wildcards
-            prefix - the prefix whose completions to search for
-            numCompletions - the number of search results
-	    vect-holds requireed number of completions
-	    numCompletions = required  number of completions
-            
- * Return Value: NONE
-*/
 
 void DictionaryTrie::getWildCard(TrieNode* root, string wildCard, string prefix, vector<pair<string, unsigned int>> & vect, unsigned int index) {   
 

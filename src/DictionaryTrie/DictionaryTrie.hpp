@@ -29,13 +29,15 @@ public:
        }
     }
 };
+
+//priority_queue< pair<unsigned int, string>, vector<pair<unsigned int, string>>, comparator> & pq,
 /**
  * The class for a dictionary ADT, implemented as either
  * a mulit-way trie or a ternary search tree.
  */
 class DictionaryTrie {
   private:
-    // TODO: add private members and helper methods here
+    // add private members and helper methods here
     // pointer to root of DictionaryTrie
     TrieNode * root;
     
@@ -44,7 +46,8 @@ class DictionaryTrie {
     TrieNode* getPrefixRoot(TrieNode* root, string prefix, int charIndex)const;
 
     // Second helper function for predictCompletions; uses recursion to find all words starting from prefix nodes
-    void getAllWords(TrieNode* root, string prefix,priority_queue< pair<unsigned int, string>, vector<pair<unsigned int, string>>, comparator> & pq, int numCompletions);
+    void getAllWords(TrieNode* root, string prefix,  priority_queue< pair<unsigned int, string>, vector<pair<unsigned int, string>>, comparator> & pq,
+  int numCompletions);
 
     // Helper function for insert; uses recursion to insert TrieNodes
     bool insertHelper(string word, unsigned int freq, TrieNode ** node, int i);
